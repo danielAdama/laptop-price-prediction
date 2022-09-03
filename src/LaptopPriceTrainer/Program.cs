@@ -62,7 +62,8 @@ namespace LaptopPriceTrainer
                 .Append(mlContext.Regression.Trainers.LightGbm(
                     labelColumnName: nameof(DataSchema.Price),
                     numberOfLeaves: 20,
-                    learningRate: 0.2
+                    learningRate: 0.2,
+                    numberOfIterations: 150
                 ));
                 
             Console.WriteLine($"Model training finished in {(DateTime.Now - startTime).TotalSeconds} seconds");
