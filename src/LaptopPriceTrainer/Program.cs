@@ -28,11 +28,14 @@ namespace LaptopPriceTrainer
             // .Append(mlContext.Transforms.Concatenate("Features", "CPU", "GPU", "RAMType",
             // "GHz", "RAM", "Storage", "SSD"));
 
-            var dataProcessingPipeline = mlContext.Transforms.Categorical.OneHotHashEncoding("CPU")
-            .Append(mlContext.Transforms.Categorical.OneHotHashEncoding("GPU"))
-            .Append(mlContext.Transforms.Categorical.OneHotHashEncoding("RAMType"))
-            .Append(mlContext.Transforms.Concatenate("Features", "CPU", "GPU", "RAMType",
-            "GHz", "RAM", "Storage", "SSD"));
+            var dataProcessingPipeline = mlContext.Transforms.Categorical.OneHotHashEncoding(nameof(DataSchema.CPU))
+                .Append(mlContext.Transforms.Categorical.OneHotHashEncoding(nameof(DataSchema.GPU)))
+                .Append(mlContext.Transforms.Categorical.OneHotHashEncoding(nameof(DataSchema.RAMType)))
+                .Append(mlContext.Transforms.Concatenate("Features", nameof(DataSchema.CPU), 
+                nameof(DataSchema.GPU), nameof(DataSchema.RAMType), nameof(DataSchema.GHz),
+                nameof(DataSchema.RAM), nameof(DataSchema.Storage), nameof(DataSchema.SSD)));
+
+
 
 
 
