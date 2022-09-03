@@ -22,6 +22,20 @@ namespace LaptopPriceTrainer
             // Split the Dataset
             var testTrainData = mlContext.Data.TrainTestSplit(data, testFraction:0.2);
 
+            // var dataProcessingPipeline = mlContext.Transforms.Categorical.OneHotHashEncoding("CPU")
+            // .Append(mlContext.Transforms.Categorical.OneHotHashEncoding("GPU"))
+            // .Append(mlContext.Transforms.Categorical.OneHotHashEncoding("RAMType"))
+            // .Append(mlContext.Transforms.Concatenate("Features", "CPU", "GPU", "RAMType",
+            // "GHz", "RAM", "Storage", "SSD"));
+
+            var dataProcessingPipeline = mlContext.Transforms.Categorical.OneHotHashEncoding("CPU")
+            .Append(mlContext.Transforms.Categorical.OneHotHashEncoding("GPU"))
+            .Append(mlContext.Transforms.Categorical.OneHotHashEncoding("RAMType"))
+            .Append(mlContext.Transforms.Concatenate("Features", "CPU", "GPU", "RAMType",
+            "GHz", "RAM", "Storage", "SSD"));
+
+
+
 
         }
     }
