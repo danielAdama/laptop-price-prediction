@@ -67,13 +67,22 @@ namespace LaptopPriceTrainer
 
             var ffpreds = fastFtrainedModel.Transform(testTrainData.TestSet);
             var ftpreds = fastTtrainedModel.Transform(testTrainData.TestSet);
+            var prpreds = poissonRtrainedModel.Transform(testTrainData.TestSet);
+            var lgpreds = lightGtrainedModel.Transform(testTrainData.TestSet);
 
             var ffmetrics = mlContext.Regression.Evaluate(ffpreds, labelColumnName: nameof(DataSchema.Price));
             var ftmetrics = mlContext.Regression.Evaluate(ftpreds, labelColumnName: nameof(DataSchema.Price));
+            var prmetrics = mlContext.Regression.Evaluate(prpreds, labelColumnName: nameof(DataSchema.Price));
+            var lgmetrics = mlContext.Regression.Evaluate(lgpreds, labelColumnName: nameof(DataSchema.Price));
+
             Console.WriteLine($"\nFast Forest RSquared Score: {ffmetrics.RSquared:0.####}");
             Console.WriteLine($"Fast Forest RMSE Score: {ffmetrics.RootMeanSquaredError:0.####}\n");
             Console.WriteLine($"Fast Tree RSquared Score: {ftmetrics.RSquared:0.####}");
             Console.WriteLine($"Fast Tree RMSE Score: {ftmetrics.RootMeanSquaredError:0.####}");
+            Console.WriteLine($"Poisson Regression RSquared Score: {prmetrics.RSquared:0.####}");
+            Console.WriteLine($"Poisson Regression RMSE Score: {prmetrics.RootMeanSquaredError:0.####}");
+            Console.WriteLine($"LightGbm RSquared Score: {lgmetrics.RSquared:0.####}");
+            Console.WriteLine($"LightGbm RMSE Score: {lgmetrics.RootMeanSquaredError:0.####}");
         }
 
         // public static 
