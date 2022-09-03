@@ -33,7 +33,7 @@ namespace LaptopPriceTrainer
                 .Append(mlContext.Transforms.Categorical.OneHotHashEncoding(nameof(DataSchema.RAMType)))
                 .Append(mlContext.Transforms.Concatenate("Features", nameof(DataSchema.CPU), 
                 nameof(DataSchema.GPU), nameof(DataSchema.RAMType), nameof(DataSchema.GHz),
-                nameof(DataSchema.RAM), nameof(DataSchema.Screen), nameof(DataSchema.Storage),
+                nameof(DataSchema.RAM), nameof(DataSchema.Weight), nameof(DataSchema.Screen), nameof(DataSchema.Storage),
                 nameof(DataSchema.SSD)));
 
             Console.WriteLine("Start training model");
@@ -60,8 +60,11 @@ namespace LaptopPriceTrainer
 
             var lightGtrainingPipeline = dataProcessingPipeline
                 .Append(mlContext.Regression.Trainers.LightGbm(
-                    labelColumnName: nameof(DataSchema.Price), numberOfLeaves: 5
+                    labelColumnName: nameof(DataSchema.Price),
+                    numberOfLeaves: 20,
+                    learningRate: 0.2
                 ));
+                
             Console.WriteLine($"Model training finished in {(DateTime.Now - startTime).TotalSeconds} seconds");
 
             var fastFtrainedModel = fastFtrainingPipeline.Fit(testTrainData.TrainSet);
@@ -79,14 +82,14 @@ namespace LaptopPriceTrainer
             var prmetrics = mlContext.Regression.Evaluate(prpreds, labelColumnName: nameof(DataSchema.Price));
             var lgmetrics = mlContext.Regression.Evaluate(lgpreds, labelColumnName: nameof(DataSchema.Price));
 
-            Console.WriteLine($"\nFast Forest RSquared Score: {ffmetrics.RSquared:0.####}");
-            Console.WriteLine($"Fast Forest RMSE Score: {ffmetrics.RootMeanSquaredError:0.####}\n");
-            Console.WriteLine($"Fast Tree RSquared Score: {ftmetrics.RSquared:0.####}");
-            Console.WriteLine($"Fast Tree RMSE Score: {ftmetrics.RootMeanSquaredError:0.####}\n");
-            Console.WriteLine($"Poisson Regression RSquared Score: {prmetrics.RSquared:0.####}");
-            Console.WriteLine($"Poisson Regression RMSE Score: {prmetrics.RootMeanSquaredError:0.####}\n");
-            Console.WriteLine($"LightGbm RSquared Score: {lgmetrics.RSquared:0.####}");
-            Console.WriteLine($"LightGbm RMSE Score: {lgmetrics.RootMeanSquaredError:0.####}\n");
+            Console.WriteLine($"\nFast Forest RSquared Score: {ffmetrics.RSquared:0.#####}");
+            Console.WriteLine($"Fast Forest RMSE Score: {ffmetrics.RootMeanSquaredError:0.#####}\n");
+            Console.WriteLine($"Fast Tree RSquared Score: {ftmetrics.RSquared:0.#####}");
+            Console.WriteLine($"Fast Tree RMSE Score: {ftmetrics.RootMeanSquaredError:0.#####}\n");
+            Console.WriteLine($"Poisson Regression RSquared Score: {prmetrics.RSquared:0.#####}");
+            Console.WriteLine($"Poisson Regression RMSE Score: {prmetrics.RootMeanSquaredError:0.#####}\n");
+            Console.WriteLine($"LightGbm RSquared Score: {lgmetrics.RSquared:0.#####}");
+            Console.WriteLine($"LightGbm RMSE Score: {lgmetrics.RootMeanSquaredError:0.#####}\n");
         }
 
         // public static var train()
