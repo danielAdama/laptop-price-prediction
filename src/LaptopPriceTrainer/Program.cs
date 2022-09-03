@@ -29,12 +29,16 @@ namespace LaptopPriceTrainer
                 nameof(DataSchema.GPU), nameof(DataSchema.RAMType), nameof(DataSchema.GHz),
                 nameof(DataSchema.RAM), nameof(DataSchema.Storage), nameof(DataSchema.SSD)));
 
+            Console.WriteLine("Start training model");
+            var startTime = DateTime.Now;
             var trainingPipeline = dataProcessingPipeline
                 .Append(mlContext.Regression.Trainers.FastForest(labelColumnName: nameof(DataSchema.Price)));
+            Console.WriteLine($"Model training finished in {(DateTime.Now - startTime).TotalSeconds} seconds");
 
             var trainedModel = trainingPipeline.Fit(testTrainData.TrainSet);
             var preds = trainedModel.Transform(testTrainData.TestSet);
             var metrics = mlContext.Regression.Evaluate(preds, labelColumnName: nameof(DataSchema.Price));
+            Console.WriteLine($"Score {metrics}");
         }
     }
 }
