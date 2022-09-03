@@ -33,7 +33,7 @@ namespace LaptopPriceTrainer
                 .Append(mlContext.Transforms.Categorical.OneHotHashEncoding(nameof(DataSchema.RAMType)))
                 .Append(mlContext.Transforms.Concatenate("Features", nameof(DataSchema.CPU), 
                 nameof(DataSchema.GPU), nameof(DataSchema.RAMType), nameof(DataSchema.GHz),
-                nameof(DataSchema.RAM), nameof(DataSchema.Weight), nameof(DataSchema.Screen), nameof(DataSchema.Storage),
+                nameof(DataSchema.RAM),nameof(DataSchema.Weight), nameof(DataSchema.Screen), nameof(DataSchema.Storage),
                 nameof(DataSchema.SSD)));
 
             Console.WriteLine("Start training model");
