@@ -1,0 +1,75 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/daniel/Desktop/programming/pythondatascience/datascience/c_sharp/learn_resources/C-sharp-tutorials/laptop-price-prediction/src/LaptopPriceTrainer/LaptopPriceTrainer.csproj": {}
+  },
+  "projects": {
+    "/home/daniel/Desktop/programming/pythondatascience/datascience/c_sharp/learn_resources/C-sharp-tutorials/laptop-price-prediction/src/LaptopPriceTrainer/LaptopPriceTrainer.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/daniel/Desktop/programming/pythondatascience/datascience/c_sharp/learn_resources/C-sharp-tutorials/laptop-price-prediction/src/LaptopPriceTrainer/LaptopPriceTrainer.csproj",
+        "projectName": "LaptopPriceTrainer",
+        "projectPath": "/home/daniel/Desktop/programming/pythondatascience/datascience/c_sharp/learn_resources/C-sharp-tutorials/laptop-price-prediction/src/LaptopPriceTrainer/LaptopPriceTrainer.csproj",
+        "packagesPath": "/home/daniel/.nuget/packages/",
+        "outputPath": "/home/daniel/Desktop/programming/pythondatascience/datascience/c_sharp/learn_resources/C-sharp-tutorials/laptop-price-prediction/src/LaptopPriceTrainer/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/daniel/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.ML": {
+              "target": "Package",
+              "version": "[1.7.1, )"
+            },
+            "Microsoft.ML.FastTree": {
+              "target": "Package",
+              "version": "[1.7.1, )"
+            },
+            "Microsoft.ML.LightGbm": {
+              "target": "Package",
+              "version": "[1.7.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/home/daniel/dotnet/sdk/6.0.400/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
