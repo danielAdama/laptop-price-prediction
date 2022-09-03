@@ -23,10 +23,10 @@ namespace LaptopPriceTrainer
         public float Screen { get; set; }
 
         [ColumnName("Storage"), LoadColumn(6)]
-        public string Storage { get; set; }
+        public float Storage { get; set; }
 
         [ColumnName("SSD"), LoadColumn(7)]
-        public bool SSD { get; set; }
+        public float SSD { get; set; }
 
         [ColumnName("Weight"), LoadColumn(8)]
         public float Weight { get; set; }
