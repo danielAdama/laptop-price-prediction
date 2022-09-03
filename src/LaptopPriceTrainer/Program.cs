@@ -42,7 +42,8 @@ namespace LaptopPriceTrainer
                 .Append(mlContext.Regression.Trainers.FastForest(
                     labelColumnName: nameof(DataSchema.Price),
                     featureColumnName: "Features",
-                    numberOfLeaves: 25));
+                    numberOfLeaves: 25,
+                    numberOfTrees: 120));
             
 
             var fastTtrainingPipeline = dataProcessingPipeline
