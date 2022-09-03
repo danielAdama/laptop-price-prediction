@@ -52,7 +52,7 @@ namespace LaptopPriceTrainer
                     featureColumnName: "Features",
                     numberOfLeaves: 30,
                     numberOfTrees: 60,
-                    learningRate: 0.49));
+                    learningRate: 0.25));
 
             var poissonRtrainingPipeline = dataProcessingPipeline
                 .Append(mlContext.Regression.Trainers.LbfgsPoissonRegression(labelColumnName: nameof(DataSchema.Price)));
