@@ -54,7 +54,10 @@ namespace LaptopPriceTrainer
                     numberOfTrees: 60));
 
             var poissonRtrainingPipeline = dataProcessingPipeline
-                .Append(mlContext.Regression.Trainers.LbfgsPoissonRegression(labelColumnName: nameof(DataSchema.Price)));
+                .Append(mlContext.Regression.Trainers.LbfgsPoissonRegression(
+                    labelColumnName: nameof(DataSchema.Price),
+                    historySize:50
+                ));
 
             var lightGtrainingPipeline = dataProcessingPipeline
                 .Append(mlContext.Regression.Trainers.LightGbm(labelColumnName: nameof(DataSchema.Price)));
@@ -78,13 +81,20 @@ namespace LaptopPriceTrainer
             Console.WriteLine($"\nFast Forest RSquared Score: {ffmetrics.RSquared:0.####}");
             Console.WriteLine($"Fast Forest RMSE Score: {ffmetrics.RootMeanSquaredError:0.####}\n");
             Console.WriteLine($"Fast Tree RSquared Score: {ftmetrics.RSquared:0.####}");
-            Console.WriteLine($"Fast Tree RMSE Score: {ftmetrics.RootMeanSquaredError:0.####}");
+            Console.WriteLine($"Fast Tree RMSE Score: {ftmetrics.RootMeanSquaredError:0.####}\n");
             Console.WriteLine($"Poisson Regression RSquared Score: {prmetrics.RSquared:0.####}");
-            Console.WriteLine($"Poisson Regression RMSE Score: {prmetrics.RootMeanSquaredError:0.####}");
+            Console.WriteLine($"Poisson Regression RMSE Score: {prmetrics.RootMeanSquaredError:0.####}\n");
             Console.WriteLine($"LightGbm RSquared Score: {lgmetrics.RSquared:0.####}");
-            Console.WriteLine($"LightGbm RMSE Score: {lgmetrics.RootMeanSquaredError:0.####}");
+            Console.WriteLine($"LightGbm RMSE Score: {lgmetrics.RootMeanSquaredError:0.####}\n");
         }
 
-        // public static 
+        // public static var train()
+        // {
+        //     var lightGtrainingPipeline = dataProcessingPipeline
+        //         .Append(mlContext.Regression.Trainers.LightGbm(labelColumnName: nameof(DataSchema.Price)));
+        //     Console.WriteLine($"Model training finished in {(DateTime.Now - startTime).TotalSeconds} seconds");
+
+        //     var fastFtrainedModel = fastFtrainingPipeline.Fit(testTrainData.TrainSet);
+        // }
     }
 }
