@@ -50,7 +50,7 @@ namespace LaptopPriceTrainer
                 .Append(mlContext.Regression.Trainers.FastTree(
                     labelColumnName: nameof(DataSchema.Price),
                     featureColumnName: "Features",
-                    numberOfLeaves: 50,
+                    numberOfLeaves: 30,
                     numberOfTrees: 60));
 
             var poissonRtrainingPipeline = dataProcessingPipeline
