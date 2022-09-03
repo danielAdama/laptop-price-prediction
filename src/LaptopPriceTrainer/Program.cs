@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
 using Microsoft.ML;
+using Microsoft.ML.Data;
 
 namespace LaptopPriceTrainer
 {
@@ -18,7 +19,7 @@ namespace LaptopPriceTrainer
 
             // Load the Data
             var data = mlContext.Data.LoadFromTextFile<DataSchema>(dataPath, hasHeader: true, separatorChar: ',');
-            
+
             // Split the Dataset
             var testTrainData = mlContext.Data.TrainTestSplit(data, testFraction:0.2);
 
