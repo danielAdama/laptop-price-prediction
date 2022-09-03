@@ -22,12 +22,6 @@ namespace LaptopPriceTrainer
             // Split the Dataset
             var testTrainData = mlContext.Data.TrainTestSplit(data, testFraction:0.2);
 
-            // var dataProcessingPipeline = mlContext.Transforms.Categorical.OneHotHashEncoding("CPU")
-            // .Append(mlContext.Transforms.Categorical.OneHotHashEncoding("GPU"))
-            // .Append(mlContext.Transforms.Categorical.OneHotHashEncoding("RAMType"))
-            // .Append(mlContext.Transforms.Concatenate("Features", "CPU", "GPU", "RAMType",
-            // "GHz", "RAM", "Storage", "SSD"));
-
             var dataProcessingPipeline = mlContext.Transforms.Categorical.OneHotHashEncoding(nameof(DataSchema.CPU))
                 .Append(mlContext.Transforms.Categorical.OneHotHashEncoding(nameof(DataSchema.GPU)))
                 .Append(mlContext.Transforms.Categorical.OneHotHashEncoding(nameof(DataSchema.RAMType)))
@@ -35,11 +29,12 @@ namespace LaptopPriceTrainer
                 nameof(DataSchema.GPU), nameof(DataSchema.RAMType), nameof(DataSchema.GHz),
                 nameof(DataSchema.RAM), nameof(DataSchema.Storage), nameof(DataSchema.SSD)));
 
+            var trainingPipeline = dataProcessingPipeline
+                .Append(mlContext.Regression.Trainers.FastForest(labelColumnName: nameof(DataSchema.Price)));
 
-
-
-
-
+            var trainedModel = trainingPipeline.Fit(testTrainData.TrainSet);
+            var preds = trainedModel.Transform(testTrainData.TestSet);
+            var metrics = mlContext.Regression.Evaluate(preds, labelColumnName: nameof(DataSchema.Price));
         }
     }
 }
