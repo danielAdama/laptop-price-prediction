@@ -56,7 +56,7 @@ namespace LaptopPriceTrainer
             var poissonRtrainingPipeline = dataProcessingPipeline
                 .Append(mlContext.Regression.Trainers.LbfgsPoissonRegression(
                     labelColumnName: nameof(DataSchema.Price),
-                    historySize:60
+                    historySize:100
                 ));
 
             var lightGtrainingPipeline = dataProcessingPipeline
