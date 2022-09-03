@@ -59,7 +59,9 @@ namespace LaptopPriceTrainer
                 ));
 
             var lightGtrainingPipeline = dataProcessingPipeline
-                .Append(mlContext.Regression.Trainers.LightGbm(labelColumnName: nameof(DataSchema.Price)));
+                .Append(mlContext.Regression.Trainers.LightGbm(
+                    labelColumnName: nameof(DataSchema.Price), numberOfLeaves: 5
+                ));
             Console.WriteLine($"Model training finished in {(DateTime.Now - startTime).TotalSeconds} seconds");
 
             var fastFtrainedModel = fastFtrainingPipeline.Fit(testTrainData.TrainSet);
