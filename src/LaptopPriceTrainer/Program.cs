@@ -42,12 +42,16 @@ namespace LaptopPriceTrainer
                 .Append(mlContext.Regression.Trainers.FastForest(
                     labelColumnName: nameof(DataSchema.Price),
                     featureColumnName: "Features",
-                    numberOfLeaves: 25,
-                    numberOfTrees: 120));
+                    numberOfLeaves: 50,
+                    numberOfTrees: 200));
             
 
             var fastTtrainingPipeline = dataProcessingPipeline
-                .Append(mlContext.Regression.Trainers.FastTree(labelColumnName: nameof(DataSchema.Price)));
+                .Append(mlContext.Regression.Trainers.FastTree(
+                    labelColumnName: nameof(DataSchema.Price),
+                    featureColumnName: "Features",
+                    numberOfLeaves: 50,
+                    numberOfTrees: 50));
 
             var poissonRtrainingPipeline = dataProcessingPipeline
                 .Append(mlContext.Regression.Trainers.LbfgsPoissonRegression(labelColumnName: nameof(DataSchema.Price)));
