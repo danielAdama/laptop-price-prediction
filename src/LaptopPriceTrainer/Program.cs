@@ -28,22 +28,23 @@ namespace LaptopPriceTrainer
             // Split the Dataset
             var testTrainData = mlContext.Data.TrainTestSplit(data, testFraction:0.2);
 
-            var dataProcessingPipeline = mlContext.Transforms.Categorical.OneHotHashEncoding(nameof(DataSchema.CPU))
-                .Append(mlContext.Transforms.Categorical.OneHotHashEncoding(nameof(DataSchema.GPU)))
-                .Append(mlContext.Transforms.Categorical.OneHotHashEncoding(nameof(DataSchema.RAMType)))
+            var dataProcessingPipeline = mlContext.Transforms.Categorical.OneHotEncoding(nameof(DataSchema.CPU))
+                .Append(mlContext.Transforms.Categorical.OneHotEncoding(nameof(DataSchema.GPU)))
+                .Append(mlContext.Transforms.Categorical.OneHotEncoding(nameof(DataSchema.RAMType)))
                 .Append(mlContext.Transforms.Concatenate("Features", nameof(DataSchema.CPU), 
                 nameof(DataSchema.GPU), nameof(DataSchema.RAMType), nameof(DataSchema.GHz),
-                nameof(DataSchema.RAM),nameof(DataSchema.Weight), nameof(DataSchema.Screen), nameof(DataSchema.Storage),
+                nameof(DataSchema.RAM), nameof(DataSchema.Weight), nameof(DataSchema.Screen), nameof(DataSchema.Storage),
                 nameof(DataSchema.SSD)));
 
             Console.WriteLine("Start training model");
             var startTime = DateTime.Now;
-            var fastFtrainingPipeline = dataProcessingPipeline
-                .Append(mlContext.Regression.Trainers.FastForest(
+            var fastTreettrainingPipeline = dataProcessingPipeline
+                .Append(mlContext.Regression.Trainers.FastTreeTweedie(
                     labelColumnName: nameof(DataSchema.Price),
                     featureColumnName: "Features",
-                    numberOfLeaves: 50,
-                    numberOfTrees: 200));
+                    numberOfLeaves: 30,
+                    learningRate: 0.24,
+                    numberOfTrees: 60));
             
 
             var fastTtrainingPipeline = dataProcessingPipeline
@@ -51,55 +52,38 @@ namespace LaptopPriceTrainer
                     labelColumnName: nameof(DataSchema.Price),
                     featureColumnName: "Features",
                     numberOfLeaves: 30,
+                    learningRate: 0.24,
                     numberOfTrees: 60));
-
-            var poissonRtrainingPipeline = dataProcessingPipeline
-                .Append(mlContext.Regression.Trainers.LbfgsPoissonRegression(
-                    labelColumnName: nameof(DataSchema.Price)
-                ));
 
             var lightGtrainingPipeline = dataProcessingPipeline
                 .Append(mlContext.Regression.Trainers.LightGbm(
                     labelColumnName: nameof(DataSchema.Price),
+                    featureColumnName: "Features",
                     numberOfLeaves: 20,
-                    learningRate: 0.2,
-                    numberOfIterations: 150
+                    learningRate: 0.25,
+                    numberOfIterations: 50
                 ));
                 
             Console.WriteLine($"Model training finished in {(DateTime.Now - startTime).TotalSeconds} seconds");
 
-            var fastFtrainedModel = fastFtrainingPipeline.Fit(testTrainData.TrainSet);
+            var fastTreettrainedModel = fastTreettrainingPipeline.Fit(testTrainData.TrainSet);
             var fastTtrainedModel = fastTtrainingPipeline.Fit(testTrainData.TrainSet);
-            var poissonRtrainedModel = fastTtrainingPipeline.Fit(testTrainData.TrainSet);
-            var lightGtrainedModel = fastTtrainingPipeline.Fit(testTrainData.TrainSet);
+            var lightGtrainedModel = lightGtrainingPipeline.Fit(testTrainData.TrainSet);
 
-            var ffpreds = fastFtrainedModel.Transform(testTrainData.TestSet);
+            var fastTreetpreds = fastTreettrainedModel.Transform(testTrainData.TestSet);
             var ftpreds = fastTtrainedModel.Transform(testTrainData.TestSet);
-            var prpreds = poissonRtrainedModel.Transform(testTrainData.TestSet);
             var lgpreds = lightGtrainedModel.Transform(testTrainData.TestSet);
 
-            var ffmetrics = mlContext.Regression.Evaluate(ffpreds, labelColumnName: nameof(DataSchema.Price));
+            var fastTreetmetrics = mlContext.Regression.Evaluate(fastTreetpreds, labelColumnName: nameof(DataSchema.Price));
             var ftmetrics = mlContext.Regression.Evaluate(ftpreds, labelColumnName: nameof(DataSchema.Price));
-            var prmetrics = mlContext.Regression.Evaluate(prpreds, labelColumnName: nameof(DataSchema.Price));
             var lgmetrics = mlContext.Regression.Evaluate(lgpreds, labelColumnName: nameof(DataSchema.Price));
 
-            Console.WriteLine($"\nFast Forest RSquared Score: {ffmetrics.RSquared:0.#####}");
-            Console.WriteLine($"Fast Forest RMSE Score: {ffmetrics.RootMeanSquaredError:0.#####}\n");
+            Console.WriteLine($"\nFast Forest RSquared Score: {fastTreetmetrics.RSquared:0.#####}");
+            Console.WriteLine($"Fast Forest RMSE Score: {fastTreetmetrics.RootMeanSquaredError:0.#####}\n");
             Console.WriteLine($"Fast Tree RSquared Score: {ftmetrics.RSquared:0.#####}");
             Console.WriteLine($"Fast Tree RMSE Score: {ftmetrics.RootMeanSquaredError:0.#####}\n");
-            Console.WriteLine($"Poisson Regression RSquared Score: {prmetrics.RSquared:0.#####}");
-            Console.WriteLine($"Poisson Regression RMSE Score: {prmetrics.RootMeanSquaredError:0.#####}\n");
             Console.WriteLine($"LightGbm RSquared Score: {lgmetrics.RSquared:0.#####}");
             Console.WriteLine($"LightGbm RMSE Score: {lgmetrics.RootMeanSquaredError:0.#####}\n");
         }
-
-        // public static var train()
-        // {
-        //     var lightGtrainingPipeline = dataProcessingPipeline
-        //         .Append(mlContext.Regression.Trainers.LightGbm(labelColumnName: nameof(DataSchema.Price)));
-        //     Console.WriteLine($"Model training finished in {(DateTime.Now - startTime).TotalSeconds} seconds");
-
-        //     var fastFtrainedModel = fastFtrainingPipeline.Fit(testTrainData.TrainSet);
-        // }
     }
 }
